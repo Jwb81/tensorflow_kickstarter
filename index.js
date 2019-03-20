@@ -9,6 +9,32 @@ model.compile({loss: 'meanSquaredError', optimizer: 'sgd'});
 const arrTests = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const arrLabels = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
 
+// const arrTests = [
+//     { a: 1 },
+//     { a: 2 },
+//     { a: 3 },
+//     { a: 4 },
+//     { a: 5 },
+//     { a: 6 },
+//     { a: 7 },
+//     { a: 8 },
+//     { a: 9 },
+//     { a: 10 },
+// ];
+
+// const arrLabels = [
+//     { b: 1 },
+//     { b: 3 },
+//     { b: 5 },
+//     { b: 7 },
+//     { b: 9 },
+//     { b: 11 },
+//     { b: 13 },
+//     { b: 15 },
+//     { b: 17 },
+//     { b: 19 },
+// ]
+
 // Generate some synthetic data for training.
 const xs = tf.tensor1d(arrTests);
 const ys = tf.tensor1d(arrLabels);
