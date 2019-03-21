@@ -1,5 +1,5 @@
 const csvUrl =
-  'http://192.168.1.135:1000/K1-17/Kickstarter.csv';
+  'https://tensorflow-kickstarter.herokuapp.com/data_sets/K001.csv';
 // 'https://storage.googleapis.com/tfjs-examples/multivariate-linear-regression/data/boston-housing-train.csv';
 
 async function run() {
