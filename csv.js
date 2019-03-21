@@ -11,46 +11,8 @@ const setText = (id, text) => {
   el.innerText = text;
 }
 
-async function run() {
-  //  const includedfields = [ 'zn', 'tax', 'chas' ];
-
-  setText('script-status', 'Loading CSV...');
-
-  const csvFeatures = [
-    'backers_count',
-    'category',
-    'country',
-    'goal',
-    'usd_pledged',
-    'spotlight',
-    'staff_pick',
-    'state'
-  ];
-
-  const modFns = {
-    category: data => {
-      if (!data) { return }
-      
-      data = data.replace(/\"\"/g, '"');
-      console.log(data);
-      console.log(JSON.parse(data))
-        return JSON.parse(data).name;
-    },
-  }
-
-  const csvLabel = 'state';
-  const columnConfigs = {};
-  columnConfigs[csvLabel] = { isLabel: true };
-  
-  let csvDataset = await tf.data.csv(
-    csvUrl, {
-      columnConfigs
-    });
-
-  setText('script-status', 'CSV loaded - now filtering columns out...');
-
-  let rowCount = 0;
-  csvDataset = await csvDataset.mapAsync(row => {
+const filterData = async (dataset) => {
+  const filtered = dataset.map(row => {
     // create a blank row object to add to (eliminating unwanted columns)
     const filteredRow = {
       xs: {},
@@ -73,12 +35,55 @@ async function run() {
     return filteredRow;
   })
 
+  return filtered;
+}
+
+async function run() {
+  //  const includedfields = [ 'zn', 'tax', 'chas' ];
+
+  setText('script-status', 'Loading CSV...');
+
+  const csvFeatures = [
+    'backers_count',
+    'category',
+    'country',
+    'goal',
+    'usd_pledged',
+    'spotlight',
+    'staff_pick'
+  ];
+
+  const modFns = {
+    category: data => {
+      if (!data) { return }
+
+      data = data.replace(/\"\"/g, '"');
+      console.log(data);
+      console.log(JSON.parse(data))
+        return JSON.parse(data).name;
+    },
+  }
+
+  const csvLabel = 'state';
+  const columnConfigs = {};
+  columnConfigs[csvLabel] = { isLabel: true };
+  
+  let csvDataset = await tf.data.csv(
+    csvUrl, {
+      columnConfigs
+    });
+
+  setText('script-status', 'CSV loaded - now filtering columns out...');
+
+  let rowCount = 0;
+  csvDataset = await filterData(csvDataset);
+
   setText('csv-row-length', rowCount);
   setText('csv-features', csvFeatures.join(',\n'));
   setText('csv-label', csvLabel);
   setText('script-status', 'CSV filtered...');
 
-  csvDataset.forEachAsync(z => console.log(z))
+  csvDataset.forEach(z => console.log(z))
 
   console.log(csvDataset)
   console.log(`rows: ${rowCount}`)
