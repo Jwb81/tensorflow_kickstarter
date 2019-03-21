@@ -42,7 +42,18 @@ async function run() {
       columnConfigs
     });
 
-  setText('csv-row-length', Object.keys(csvDataset));
+  let rowCount = 0;
+  csvDataset = await csvDataset.mapAsync(row => {
+    const filteredRow = {};
+    includedfields.forEach(col => {
+      filteredRow[col] = row[col];
+    })
+
+    rowCount += 1;
+    return filteredRow;
+  })
+
+  setText('csv-row-length', rowCount);
   setText('csv-features', includedfields.join(',\n'));
   setText('csv-label', labelField);
   setText('script-status', 'CSV loaded - now filtering columns out...');
@@ -50,8 +61,7 @@ async function run() {
   csvDataset.forEachAsync(z => console.log(z))
 
   console.log(csvDataset)
-  console.log(`keys: ${Object.keys(csvDataset).length}`)
-  console.log(`keys: ${Object.values(csvDataset).length}`)
+  console.log(`rows: ${rowCount}`)
   
   // Number of features is the number of column names minus one for the label column.
 //   const numOfFeatures = (await csvDataset.columnNames()).length - 1;
