@@ -22,7 +22,7 @@ async function run() {
     },
   }
 
-  const labelField = 'medv';
+  const labelField = 'state';
   const columnConfigs = {};
   columnConfigs[labelField] = { isLabel: true };
   
