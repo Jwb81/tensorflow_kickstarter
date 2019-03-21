@@ -21,7 +21,7 @@ const filterData = async (dataset, features) => {
     };
 
     // add each watned column to the filtered row
-    csvFeatures.forEach(col => {
+    features.forEach(col => {
       let data = row.xs[col];
 
       // modify the data if needed
@@ -81,7 +81,7 @@ async function run() {
 
   const { filtered, rowCount } = await filterData(csvDataset, csvFeatures);
   csvDataset = filtered;
-  
+
   setText('csv-row-length', rowCount);
   setText('csv-features', csvFeatures.join(',\n'));
   setText('csv-label', csvLabel);
