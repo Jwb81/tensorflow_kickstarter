@@ -6,10 +6,47 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 
+<style>
+html,
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: left;
+    min-height: 100vh;
+}
+
+</style>
 </head>
 <body>
-    
-    <h1>Tensorflow & Nim</h1>
+    <div class="container">
+        <h1>Tensorflow & Nim</h1>
+        <p>
+            Status: <span id="script-status"></span>
+        </p>
+        
+        <p>
+            CSV # of Rows: <span id='csv-row-length'>0</span>
+        </p>
+
+        <p>
+            <strong>Features:</strong><br />
+            <span id="csv-features"></span>
+        </p>
+
+        <p>
+            <strong>Label:</strong><br />
+            <span id="csv-label"></span>
+        </p>
+
+    </div>
+
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>

@@ -2,8 +2,19 @@ const csvUrl =
   'https://tensorflow-kickstarter.herokuapp.com/data_sets/K001.csv';
 // 'https://storage.googleapis.com/tfjs-examples/multivariate-linear-regression/data/boston-housing-train.csv';
 
+const setText = (id, text) => {
+  const el = document.getElementById(id);
+  if (!el) {
+    return console.log('element does not exist');
+  }
+
+  el.innerText = text;
+}
+
 async function run() {
   //  const includedfields = [ 'zn', 'tax', 'chas' ];
+
+  setText('script-status', 'Loading CSV...');
 
   const includedfields = [
     'backers_count',
@@ -31,8 +42,17 @@ async function run() {
       columnConfigs
     });
 
+  setText('csv-row-length', Object.keys(csvDataset));
+  setText('csv-features', includedfields.join(',\n'));
+  setText('csv-label', labelField);
+  setText('script-status', 'CSV loaded - now filtering columns out...');
+
   csvDataset.forEachAsync(z => console.log(z))
 
+  console.log(csvDataset)
+  console.log(`keys: ${Object.keys(csvDataset).length}`)
+  console.log(`keys: ${Object.values(csvDataset).length}`)
+  
   // Number of features is the number of column names minus one for the label column.
 //   const numOfFeatures = (await csvDataset.columnNames()).length - 1;
 
