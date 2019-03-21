@@ -29,6 +29,8 @@ async function run() {
 
   const modFns = {
     category: data => {
+      console.log(data);
+      console.log(JSON.parse(data))
         return JSON.parse(data).name;
     },
   }
@@ -46,12 +48,17 @@ async function run() {
 
   let rowCount = 0;
   csvDataset = await csvDataset.mapAsync(row => {
+    // create a blank row object to add to (eliminating unwanted columns)
     const filteredRow = {
       xs: {},
       ys: {}
     };
+
+    // add each watned column to the filtered row
     csvFeatures.forEach(col => {
       let data = row.xs[col];
+
+      // modify the data if needed
       if (modFns[col]) {
         data = modFns[col](data);
       }
