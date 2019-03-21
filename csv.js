@@ -51,7 +51,7 @@ async function run() {
       ys: {}
     };
     includedfields.forEach(col => {
-      filteredRow.xs[col] = row[col];
+      filteredRow.xs[col] = row.xs[col];
     })
     filteredRow.ys = row.ys;
 
