@@ -16,7 +16,7 @@ async function run() {
 
   setText('script-status', 'Loading CSV...');
 
-  const includedfields = [
+  const csvFeatures = [
     'backers_count',
     'category',
     'country',
@@ -27,15 +27,17 @@ async function run() {
     'state'
   ];
 
-  const filterFns = {
-    category: data => {
-      return data.name;
-    },
+  const modFns = {
+    category: {
+      fn: data => {
+        return JSON.parse(data).name;
+      },
+    }
   }
 
-  const labelField = 'state';
+  const csvLabel = 'state';
   const columnConfigs = {};
-  columnConfigs[labelField] = { isLabel: true };
+  columnConfigs[csvLabel] = { isLabel: true };
   
   let csvDataset = await tf.data.csv(
     csvUrl, {
@@ -50,8 +52,12 @@ async function run() {
       xs: {},
       ys: {}
     };
-    includedfields.forEach(col => {
-      filteredRow.xs[col] = row.xs[col];
+    csvFeatures.forEach(col => {
+      let data = row.xs[col];
+      if (modFns[col]) {
+        data = modFns[col](data);
+      }
+      filteredRow.xs[col] = data;
     })
     filteredRow.ys = row.ys;
 
@@ -60,8 +66,8 @@ async function run() {
   })
 
   setText('csv-row-length', rowCount);
-  setText('csv-features', includedfields.join(',\n'));
-  setText('csv-label', labelField);
+  setText('csv-features', csvFeatures.join(',\n'));
+  setText('csv-label', csvLabel);
   setText('script-status', 'CSV filtered...');
 
   csvDataset.forEachAsync(z => console.log(z))
