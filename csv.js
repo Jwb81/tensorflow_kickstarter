@@ -29,6 +29,7 @@ async function run() {
 
   const modFns = {
     category: data => {
+      data = data.replace(/\"\"/g, '"');
       console.log(data);
       console.log(JSON.parse(data))
         return JSON.parse(data).name;
