@@ -28,11 +28,9 @@ async function run() {
   ];
 
   const modFns = {
-    category: {
-      fn: data => {
+    category: data => {
         return JSON.parse(data).name;
-      },
-    }
+    },
   }
 
   const csvLabel = 'state';
