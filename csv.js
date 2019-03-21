@@ -11,7 +11,8 @@ const setText = (id, text) => {
   el.innerText = text;
 }
 
-const filterData = async (dataset) => {
+const filterData = async (dataset, features) => {
+  let rowCount = 0;
   const filtered = dataset.map(row => {
     // create a blank row object to add to (eliminating unwanted columns)
     const filteredRow = {
@@ -35,7 +36,10 @@ const filterData = async (dataset) => {
     return filteredRow;
   })
 
-  return filtered;
+  return {
+    filtered,
+    rowCount
+  }
 }
 
 async function run() {
@@ -75,9 +79,9 @@ async function run() {
 
   setText('script-status', 'CSV loaded - now filtering columns out...');
 
-  let rowCount = 0;
-  csvDataset = await filterData(csvDataset);
-
+  const { filtered, rowCount } = await filterData(csvDataset, csvFeatures);
+  csvDataset = filtered;
+  
   setText('csv-row-length', rowCount);
   setText('csv-features', csvFeatures.join(',\n'));
   setText('csv-label', csvLabel);
