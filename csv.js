@@ -44,16 +44,16 @@ async function run() {
 
   setText('script-status', 'CSV loaded - now filtering columns out...');
 
-  let rowCount = 0;
-  csvDataset = await csvDataset.mapAsync(row => {
-    const filteredRow = {};
-    includedfields.forEach(col => {
-      filteredRow[col] = row[col];
-    })
+  // let rowCount = 0;
+  // csvDataset = await csvDataset.mapAsync(row => {
+  //   const filteredRow = {};
+  //   includedfields.forEach(col => {
+  //     filteredRow[col] = row[col];
+  //   })
 
-    rowCount += 1;
-    return filteredRow;
-  })
+  //   rowCount += 1;
+  //   return filteredRow;
+  // })
 
   setText('csv-row-length', rowCount);
   setText('csv-features', includedfields.join(',\n'));
