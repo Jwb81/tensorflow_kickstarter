@@ -1,6 +1,6 @@
 const csvUrl =
-  'https://tensorflow-kickstarter.herokuapp.com/data_sets/K001.csv';
-// 'https://storage.googleapis.com/tfjs-examples/multivariate-linear-regression/data/boston-housing-train.csv';
+  // 'https://tensorflow-kickstarter.herokuapp.com/data_sets/K001.csv'
+  'http://localhost:1000/data_sets/K001.csv';
 
 const setText = (id, text) => {
   const el = document.getElementById(id);
@@ -12,12 +12,23 @@ const setText = (id, text) => {
 }
 
 const filterData = async (dataset, features) => {
+  const modFns = {
+    category: data => {
+      if (!data) { return }
+      console.log('---------------------------\n\n')
+      console.log(data);
+      data = data.replace(/\"\"/g, '"');
+      console.log(JSON.parse(data))
+        return JSON.parse(data).name;
+    },
+  }
+
   let rowCount = 0;
   const filtered = dataset.map(row => {
     // create a blank row object to add to (eliminating unwanted columns)
     const filteredRow = {
       xs: {},
-      ys: {}
+      ys: row.ys
     };
 
     // add each watned column to the filtered row
@@ -25,12 +36,12 @@ const filterData = async (dataset, features) => {
       let data = row.xs[col];
 
       // modify the data if needed
-      if (modFns[col]) {
-        data = modFns[col](data);
-      }
+      console.log(data)
+      // if (modFns[col]) {
+      //   data = modFns[col](data);
+      // }
       filteredRow.xs[col] = data;
     })
-    filteredRow.ys = row.ys;
 
     rowCount += 1;
     return filteredRow;
@@ -57,17 +68,6 @@ async function run() {
     'staff_pick'
   ];
 
-  const modFns = {
-    category: data => {
-      if (!data) { return }
-
-      data = data.replace(/\"\"/g, '"');
-      console.log(data);
-      console.log(JSON.parse(data))
-        return JSON.parse(data).name;
-    },
-  }
-
   const csvLabel = 'state';
   const columnConfigs = {};
   columnConfigs[csvLabel] = { isLabel: true };
@@ -89,8 +89,8 @@ async function run() {
 
   csvDataset.forEach(z => console.log(z))
 
-  console.log(csvDataset)
-  console.log(`rows: ${rowCount}`)
+  // console.log(csvDataset)
+  // console.log(`rows: ${rowCount}`)
   
   // Number of features is the number of column names minus one for the label column.
 //   const numOfFeatures = (await csvDataset.columnNames()).length - 1;

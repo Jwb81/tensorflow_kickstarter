@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Jwb81/tensorflow_kickstarter#readme",
   "dependencies": {
+    "@tensorflow/tfjs-node": "^1.0.2",
     "cors": "^2.8.5",
     "express": "^4.16.4"
   }
