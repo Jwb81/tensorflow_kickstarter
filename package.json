@@ -1,0 +1,25 @@
+{
+  "name": "tensorflow_kickstarter",
+  "version": "1.0.0",
+  "description": "Teaching a neural network how to play the game Nim",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jwb81/tensorflow_kickstarter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jwb81/tensorflow_kickstarter/issues"
+  },
+  "homepage": "https://github.com/Jwb81/tensorflow_kickstarter#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4"
+  }
+}
