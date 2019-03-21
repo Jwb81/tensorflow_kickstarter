@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-const PORT = 1000;
+const PORT = process.env.PORT || 1000;
 
 app.use(express.static(__dirname));
 
