@@ -42,6 +42,8 @@ async function run() {
       columnConfigs
     });
 
+  setText('script-status', 'CSV loaded - now filtering columns out...');
+
   let rowCount = 0;
   csvDataset = await csvDataset.mapAsync(row => {
     const filteredRow = {};
@@ -56,9 +58,9 @@ async function run() {
   setText('csv-row-length', rowCount);
   setText('csv-features', includedfields.join(',\n'));
   setText('csv-label', labelField);
-  setText('script-status', 'CSV loaded - now filtering columns out...');
+  setText('script-status', 'CSV filtered...');
 
-  // csvDataset.forEachAsync(z => console.log(z))
+  csvDataset.forEachAsync(z => console.log(z))
 
   console.log(csvDataset)
   console.log(`rows: ${rowCount}`)
