@@ -58,7 +58,7 @@ async function run() {
   setText('csv-label', labelField);
   setText('script-status', 'CSV loaded - now filtering columns out...');
 
-  csvDataset.forEachAsync(z => console.log(z))
+  // csvDataset.forEachAsync(z => console.log(z))
 
   console.log(csvDataset)
   console.log(`rows: ${rowCount}`)
