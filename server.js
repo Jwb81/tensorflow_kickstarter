@@ -22,11 +22,30 @@ const setText = (id, text) => {
 const filterData = async (dataset, features) => {
   const modFns = {
     category: data => {
-      if (!data) { return }
-      console.log(typeof data)
-    //   data = data.replace(/\"\"/g, '"');
-    //     return JSON.parse(data).name;
+      if (!data || typeof data !== 'string') { return }
+      try {
+        data = data.replace(/\"\"/g, '"');
+        return JSON.parse(data).name;
+      } catch(e) {
+        //   console.log(e)
+          return null;
+      }
     },
+
+    backers_count: data => {
+        if (typeof data !== 'string') { return };
+        data = data.replace(/\"/g, '');
+        data = Number(data);
+        return isNaN(data) ? 0 : data;
+    },
+
+    spotlight: data => {
+        return data === 'true' ? true : false;
+    },
+    
+    staff_pick: data => {
+        return data === 'true' ? true : false;
+    }
   }
 
   let rowCount = 0;
@@ -53,7 +72,7 @@ const filterData = async (dataset, features) => {
   })
 
 //   filtered.forEachAsync(x => console.log(x))
-
+  filtered.forEachAsync(x => x)
 
   return {
     filtered,
@@ -102,40 +121,49 @@ async function run() {
   
   // Number of features is the number of column names minus one for the label column.
 //   const numOfFeatures = (await csvDataset.columnNames()).length - 1;
+  const numOfFeatures = csvFeatures.length;
 
 //   // Prepare the Dataset for training.
-//   const flattenedDataset =
-//     csvDataset
-//     .map(({xs, ys}) =>
-//       {
-//         // Convert rows from object form (keyed by column name) to array
-//         // form.
-//         return {xs:Object.values(xs), ys:Object.values(ys)};
-//       })
-//     .batch(10);
+  let flattenedDataset = 
+    csvDataset
+    .map(({xs, ys}) =>
+      {
+        // Convert rows from object form (keyed by column name) to array
+        // form.
+        return {xs:Object.values(xs), ys:Object.values(ys)};
+      })
+    // .batch(10);
 
-//   // Define the model.
-//   const model = tf.sequential();
-//   model.add(tf.layers.dense({
-//     inputShape: [numOfFeatures],
-//     units: 1
-//   }));
-//   model.compile({
-//     optimizer: tf.train.sgd(0.000001),
-//     loss: 'meanSquaredError'
-//   });
+    
+    
+    flattenedDataset = flattenedDataset.filter(({xs, ys}) => {
+        return xs.includes(undefined) ? false : true;
+    })
+    // flattenedDataset.forEachAsync(z => console.log(z));
+
+
+  // Define the model.
+  const model = tf.sequential();
+  model.add(tf.layers.dense({
+    inputShape: [numOfFeatures],
+    units: 1
+  }));
+  model.compile({
+    optimizer: tf.train.sgd(0.000001),
+    loss: 'meanSquaredError'
+  });
 
 
 // //  flattenedDataset.forEachAsync(a => console.log(a))
-//   // Fit the model using the prepared Dataset
-//   return model.fitDataset(flattenedDataset, {
-//     epochs: 10,
-//     callbacks: {
-//       onEpochEnd: async (epoch, logs) => {
-//         console.log(epoch + ':' + logs.loss);
-//       }
-//     }
-//   });
+  // Fit the model using the prepared Dataset
+  return model.fitDataset(flattenedDataset, {
+    epochs: 10,
+    callbacks: {
+      onEpochEnd: async (epoch, logs) => {
+        console.log(epoch + ':' + logs.loss);
+      }
+    }
+  });
 }
 
 
