@@ -21,6 +21,9 @@
   "dependencies": {
     "@tensorflow/tfjs-node": "^1.0.2",
     "cors": "^2.8.5",
-    "express": "^4.16.4"
+    "csv": "^5.1.1",
+    "csv-parser": "^2.2.0",
+    "express": "^4.16.4",
+    "json-2-csv": "^3.5.0"
   }
 }

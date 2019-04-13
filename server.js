@@ -34,9 +34,13 @@ const filterData = async (dataset, features) => {
 
     backers_count: data => {
         if (typeof data !== 'string') { return };
-        data = data.replace(/\"/g, '');
-        data = Number(data);
-        return isNaN(data) ? 0 : data;
+        try {
+          data = data.replace(/\"/g, '');
+          data = Number(data);
+          return isNaN(data) ? 0 : data;
+        } catch (error) {
+          return null;          
+        }
     },
 
     spotlight: data => {
@@ -49,7 +53,7 @@ const filterData = async (dataset, features) => {
   }
 
   let rowCount = 0;
-  const filtered = dataset.map((row, idx) => {
+  const filtered = await dataset.map((row, idx) => {
     // create a blank row object to add to (eliminating unwanted columns)
     const filteredRow = {
       xs: {},
@@ -71,7 +75,7 @@ const filterData = async (dataset, features) => {
     return filteredRow;
   })
 
-//   filtered.forEachAsync(x => console.log(x))
+  // filtered.forEachAsync(x => console.log(x))
   filtered.forEachAsync(x => x)
 
   return {
@@ -106,6 +110,8 @@ async function run() {
 
   setText('script-status', 'CSV loaded - now filtering columns out...');
 
+  const numFeatures = (await csvDataset.columnNames()).length - 1;
+
   const { filtered, rowCount } = await filterData(csvDataset, csvFeatures);
   csvDataset = filtered;
 
@@ -119,33 +125,29 @@ async function run() {
   // console.log(csvDataset)
   // console.log(`rows: ${rowCount}`)
   
-  // Number of features is the number of column names minus one for the label column.
-//   const numOfFeatures = (await csvDataset.columnNames()).length - 1;
-  const numOfFeatures = csvFeatures.length;
-
-//   // Prepare the Dataset for training.
+  
+  //   // Prepare the Dataset for training.
   let flattenedDataset = 
-    csvDataset
-    .map(({xs, ys}) =>
-      {
-        // Convert rows from object form (keyed by column name) to array
-        // form.
-        return {xs:Object.values(xs), ys:Object.values(ys)};
-      })
-    // .batch(10);
-
-    
-    
-    flattenedDataset = flattenedDataset.filter(({xs, ys}) => {
-        return xs.includes(undefined) ? false : true;
-    })
-    // flattenedDataset.forEachAsync(z => console.log(z));
-
-
+  csvDataset
+  .map(({xs, ys}) =>
+  {
+    // Convert rows from object form (keyed by column name) to array
+    // form.
+    return {xs:Object.values(xs), ys:Object.values(ys)};
+  })
+  // .batch(10);
+  
+  // flattenedDataset.forEachAsync(x => console.log(x))
+  
+  flattenedDataset = await flattenedDataset.filter(({xs, ys}) => {
+    return xs.includes(undefined) ? false : true;
+  })
+  // flattenedDataset.forEachAsync(z => console.log(z));
+  
   // Define the model.
   const model = tf.sequential();
   model.add(tf.layers.dense({
-    inputShape: [numOfFeatures],
+    inputShape: [numFeatures],
     units: 1
   }));
   model.compile({
