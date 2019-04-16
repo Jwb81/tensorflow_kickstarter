@@ -4,12 +4,12 @@ const fs = require('fs');
 
 let results = [];
 
-const csvFeatures = [
-    'backers_count',
+const csvFeatures = [ 
+    'backers_count', // get rid of this
     'category',
     'country',
     'goal',
-    'usd_pledged',
+    'usd_pledged',  // get rid of this
     'spotlight',
     'staff_pick'
   ];
