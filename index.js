@@ -11,8 +11,6 @@ fs.readFile('./test.json', 'utf8', (err, data) => {
   }
   data = JSON.parse(data)
   fit(data.features, data.labels);
-  console.log(data.features.length)
-  console.log(data.labels.length)
 })
 
 // xs = tf.tensor2d(arrTests);
@@ -30,19 +28,27 @@ const fit = async (features, labels) => {
   const ys = tf.tensor2d(labels);
 
   await model.fit(xs, ys, {
-    batchSize: 2,
-    epochs: 10
+    batchSize: 4,
+    epochs: 5000
   })
   model.predict(xs).print()
 
   await model.save('file://./saved-model');
 
-  // const loadedModel = await tf.loadLayersModel('file://./saved-model/model.json');
-  // console.log(`
-  
-  // loaded model:
-  // `)
-  // loadedModel.predict(xs).print();
 }
 
+const load = async () => {
+  const loadedModel = await tf.loadLayersModel('file://./saved-model/model.json');
+  
+  const success = [ 30, 0, 0, 1000, 1570.75316453, 0, 0]
+  const canceled = [ 43, 7, 2, 5000, 1526.69880231, 1, 0]
+  const failed = [ 0, 1, 1, 5000, 0, 1, 0]
+
+  const random = [40, 20, 1, 10000, 9500, 0, 0]
+
+  const tensor = tf.tensor2d(success, [1,7])
+  
+  loadedModel.predict(tensor).print();
+}
+// load();
 // fit(xs, ys);
