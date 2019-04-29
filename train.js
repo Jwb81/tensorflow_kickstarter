@@ -17,7 +17,9 @@ columnConfigs[csvLabel] = {
  };
 
 const csvUrl =
-'http://localhost:1000/data_sets/csv_parser_output.csv';
+// 'http://localhost:1000/data_sets/boston-housing-train.csv';
+'http://localhost:1000/data_sets/data.csv';
+// 'http://localhost:1000/data_sets/csv_parser_output.csv';
   // 'https://tensorflow-kickstarter.herokuapp.com/data_sets/K001.csv'
 //   'http://localhost:1000/data_sets/K001.csv';
 
@@ -25,27 +27,27 @@ const csvUrl =
 async function run() {
     // We want to predict the column "medv", which represents a median value of
     // a home (in $1000s), so we mark it as a label.
-    const csvDataset = tf.data.csv(
+    const csvDataset = await tf.data.csv(
       csvUrl, {
         columnConfigs
       });
+
+    // csvDataset.forEachAsync(r => console.log(r));
  
-    // Number of features is the number of column names minus one for the label
-    // column.
+    // Number of features is the number of column names minus one for the label column.
     const numOfFeatures = (await csvDataset.columnNames()).length - 1;
-    console.log(`# of features: ${numOfFeatures}`)
  
     // Prepare the Dataset for training.
     const flattenedDataset =
       csvDataset
       .map(({xs, ys}) =>
         {
-          // Convert rows from object form (keyed by column name) to array
-          // form.
+          // Convert rows from object form (keyed by column name) to array form.
+          // console.log(Object.values(ys))
           return {xs:Object.values(xs), ys:Object.values(ys)};
         })
       .batch(10);
- 
+
     // Define the model.
     const model = tf.sequential();
     model.add(tf.layers.dense({
@@ -71,7 +73,7 @@ async function run() {
     });
 
     try {
-        model.predict(tf.tensor([[30],[0],[0],[1000],[1570.753],[0],[0]])).print();
+        // model.predict(tf.tensor([[30],[0],[0],[1000],[1570.753],[0],[0]])).print();
     } catch (error) {
         console.log(error)
     }
@@ -79,6 +81,7 @@ async function run() {
 
  app.listen(PORT, () => {
     console.log('Kickstarter listening on port 1000');
+    run();
 })
  
- run();
+

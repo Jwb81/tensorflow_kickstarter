@@ -5,11 +5,11 @@ const fs = require('fs');
 let results = [];
 
 const csvFeatures = [ 
-    'backers_count', // get rid of this
+    // 'backers_count', // get rid of this
     'category',
     'country',
     'goal',
-    'usd_pledged',  // get rid of this
+    // 'usd_pledged',  // get rid of this
     'spotlight',
     'staff_pick'
   ];
@@ -38,6 +38,9 @@ const fieldsToConvertToNumbers = [
 ]
 const fieldNumToValMap = {};
 
+/**
+ * Create a map that will correlate each value to a number
+ */
 const mapFieldValues = dataset => {
     const mapper = dataset.reduce((acc, cur) => {
         fieldsToConvertToNumbers.forEach(field => {
@@ -63,6 +66,9 @@ const mapFieldValues = dataset => {
     return mapper;
 }
 
+/**
+ * Use the map to actually change the values to their respective numbers (if required)
+ */
 const translateFieldValues = dataset => {
     const mapper = mapFieldValues(dataset);
 
@@ -114,6 +120,9 @@ const translateFieldValues = dataset => {
     })
 }
 
+/**
+ * Filter out any results that are not wanted in the final dataset
+ */
 const filterLabelField = (dataset) => {
     return dataset.filter((row) => allowedLabelValues.includes(row[csvLabel]));
 }
@@ -131,8 +140,10 @@ const filterLabelField = (dataset) => {
 //     }, {})
 // }
 
+/**
+ * filter out unneeded fields and modify any field values that need changed before using them to fit the dataset
+ */
 const cleanData = dataset => {
-    // const fields = dataset[0];
     dataset = dataset.map(row => {
         const filteredRow = {};
 
@@ -147,7 +158,6 @@ const cleanData = dataset => {
         return filteredRow;
     })
     
-    // console.log(fieldsToKeepIndexes);
     dataset = filterLabelField(dataset)
     
     translateFieldValues(dataset);
