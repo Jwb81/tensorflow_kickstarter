@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>TF.js & Kickstarter</title>
 
 <style>
 html,
@@ -17,39 +17,88 @@ body {
     margin: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: left;
     min-height: 100vh;
 }
 
+.form {
+    border: 1px solid blue;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form select {
+    margin-bottom: 20px;
+}
+
+.submit {
+    background-color: rgba(100,250,100,0.8);
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+}
+.submit:hover {
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
     <div class="container">
-        <h1>Tensorflow & Nim</h1>
-        <p>
-            Status: <span id="script-status"></span>
-        </p>
-        
-        <p>
-            CSV # of Rows: <span id='csv-row-length'>0</span>
-        </p>
+        <div class='form'>
+            <h1>Tensorflow & Kickstarter</h1>
 
-        <p>
-            <strong>Features:</strong><br />
-            <span id="csv-features"></span>
-        </p>
+            <div>Category</div>
+            <select id='select-category'>
+                <option disabled selected value=''>Please select one</option>
+            </select>
+            
+            <div>Country Code</div>
+            <select id='select-country'>
+                <option disabled selected value=''>Please select one</option>
+            </select>
+            
+            <div>Goal</div>
+            <input id='goal' type='number' />
 
-        <p>
-            <strong>Label:</strong><br />
-            <span id="csv-label"></span>
-        </p>
+            <div style='margin-top: 20px'>Spotlight?</div>
+            <select id='select-spotlight'> 
+                <option disabled selected value=''>Please select one</option>
+            </select>
+            
+            <div>Staff Pick?</div>
+            <select id='select-staff-pick'> 
+                <option disabled selected value=''>Please select one</option>
+            </select>
 
+            <button class='submit' onclick='submitForm()'>Predict!</button>
+            
+            <p>
+                Prediction: <span id='prediction'></span>
+            </p>
+            <p>
+                Status: <span id="status"></span>
+            </p>
+            
+            <p>
+                <strong>Features:</strong><br />
+                <span id="csv-features"></span>
+            </p>
+    
+            <p>
+                <strong>Label:</strong><br />
+                <span id="csv-label"></span>
+            </p>
+        </div>
     </div>
 
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src='./index.js'></script>
     <!-- <script src='./csv.js'></script> -->
 </body>
