@@ -18,8 +18,8 @@ columnConfigs[csvLabel] = {
 
 const csvUrl =
 // 'http://localhost:1000/data_sets/boston-housing-train.csv';
-'http://localhost:1000/data_sets/data.csv';
-// 'http://localhost:1000/data_sets/csv_parser_output.csv';
+// 'http://localhost:1000/data_sets/data.csv';
+'http://localhost:1000/data_sets/csv_parser_output.csv';
   // 'https://tensorflow-kickstarter.herokuapp.com/data_sets/K001.csv'
 //   'http://localhost:1000/data_sets/K001.csv';
 

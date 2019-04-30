@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors');
 const tf = require('@tensorflow/tfjs-node');
 
-const PORT = process.env.PORT || 1001;
+const PORT = process.env.PORT || 1000;
 
 app.use(express.static(__dirname));
 app.use(cors());
@@ -13,22 +13,19 @@ app.use(cors());
 /**
  * VARIABLES
  */
-const saveModel1 = 'file://./saved-model';
-const loadModel1 = 'file://./saved-model/model.json';
+const saveModelOld = 'file://./csv-model-short';
+const loadModelOld = 'file://./csv-model-short/model.json';
 
-const saveModel2 = 'file://./saved-model-test';
-const loadModel2 = 'file://./saved-model-test/model.json';
+const saveKickstarterModelUrl = 'file://./models/kickstarter_model';
+const loadKickstarterModelUrl = 'file://./models/kickstarter_model/model.json';
 
-const saveModel3 = 'file://./csv-model';
-const loadModel3 = 'file://./csv-model/model.json';
+const saveModel = saveModelOld;
+const loadModel = loadModelOld;
+// const saveModel = saveKickstarterModelUrl;
+// const loadModel = loadKickstarterModelUrl;
 
-const saveModel4 = 'file://./csv-model-short';
-const loadModel4 = 'file://./csv-model-short/model.json';
-
-const saveModel = saveModel4;
-const loadModel = loadModel4;
-
-const csvUrl = 'http://localhost:1001/data_sets/data.csv'
+const csvUrl = 'http://localhost:1000/data_sets/csv_parser_output.csv';
+// const csvUrl = 'http://localhost:1001/data_sets/data.csv'
 
 
 const buildTrainAndSave = async () => {
@@ -137,7 +134,17 @@ const loadAndPredict = async () => {
  */
 app.listen(PORT, () => {
   console.log('running on ' + PORT)
-  // buildTrainAndSave();
-  loadAndPredict();
+
+  switch(process.argv[2]) {
+    case 'train':
+      buildTrainAndSave();
+      break;
+    case 'predict':
+      loadAndPredict();
+      break;
+    default:
+      console.log('You must provide a valid command (train || predict)')
+      break;
+  }
   // readFile();
 })
